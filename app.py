@@ -5,18 +5,21 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
 # ——————————————————
-# Google Sheets helper (using spreadsheet ID)
+# Google Sheets helper (using spreadsheet ID + Streamlit Secrets)
 # ——————————————————
 def connect_gsheets():
     scope = [
         "https://spreadsheets.google.com/feeds",
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive.file",
-        "https://www.googleapis.com/auth/drive"
+        "https://www.googleapis.com/auth/drive",
     ]
-    creds  = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+    # Load service-account credentials from Streamlit Secrets
+    creds_dict = st.secrets["GOOGLE_CREDENTIALS"]
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
-    # Replace with your spreadsheet ID
+
+    # Your sheet ID (from the URL)
     SPREADSHEET_ID = "1MxlsC3f3pvBhdkYYQj5B7Q-ShqPK7ZLOFtE1d2VNKJ0"
     return client.open_by_key(SPREADSHEET_ID).sheet1
 
@@ -80,7 +83,7 @@ st.title("📝 CVF Organizational Culture Survey")
 # 1️⃣ Demographics
 st.header("1️⃣ Demographic Information")
 division   = st.selectbox("Division",   divisions)
-level      = st.selectbox("Level",      levels, help="Director:… | Manager:… | Office worker:… | Worker:…")
+level      = st.selectbox("Level",      levels,      help="Director | Manager | Office worker | Worker")
 gender     = st.selectbox("Gender",     genders)
 generation = st.selectbox("Generation", generations)
 tenure     = st.selectbox("Tenure",     tenures)
@@ -109,7 +112,7 @@ for elem, stmts in elements.items():
             total += score
 
     if total != 100:
-        st.error(f"❌ Total must be 100! (Currently: {total})")
+        st.error(f"❌ Total must be exactly 100! (Currently: {total})")
         all_valid = False
 
     responses[elem] = scores
@@ -120,7 +123,7 @@ if st.button("Submit"):
     if not all_valid:
         st.warning("Please correct any groups that don’t sum to 100 before submitting.")
     else:
-        # Build a single-row dict as before
+        # Build a single-row dict
         row = {
             "Timestamp":   datetime.now().isoformat(),
             "Division":    division,
@@ -133,17 +136,16 @@ if st.button("Submit"):
             for culture, val in scores.items():
                 row[f"{elem}_{culture}"] = val
 
-        # Convert to list of pure Python types
+        # Convert to plain Python types
         values = []
-        for header in row.keys():
-            v = row[header]
-            # If it's a NumPy scalar, cast to Python int
+        for v in row.values():
             try:
                 v = v.item()
-            except:
+            except AttributeError:
                 pass
             values.append(v)
 
+        # Append to Google Sheet
         sheet = connect_gsheets()
         sheet.append_row(values)
         st.success("✅ Your responses have been saved!")
