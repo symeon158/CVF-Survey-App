@@ -1,0 +1,15 @@
+# Python cache 
+__pycache__/ 
+*.py[cod] 
+ 
+# Virtual envs 
+.env/ 
+*.venv/ 
+ 
+# Streamlit, VSCode, Mac files 
+.streamlit/ 
+.vscode/ 
+.DS_Store 
+ 
+# Never commit credentials 
+credentials.json 
