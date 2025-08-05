@@ -244,10 +244,11 @@ for elem, stmts in elements.items():
 
     responses[elem] = scores
     st.markdown("---")
-submit = st.button("Υποβολή", disabled=not all_valid)
+# … after collecting `responses` and computing `all_valid` …
 
+submit = st.button("Υποβολή", disabled=not all_valid)
 if submit:
-    # 1) Append to Google Sheets
+    # 1) Push to Google Sheets
     row = {
         "Timestamp":  datetime.now().isoformat(),
         "Division":   division,
@@ -259,15 +260,18 @@ if submit:
     for elem, scores in responses.items():
         for cult, val in scores.items():
             row[f"{elem}_{cult}"] = val
-
     connect_gsheets().append_row(list(row.values()))
 
-    # 2) Show confirmation
+    # 2) Show the success message before anything else
     st.success("✅ Η απάντησή σας καταχωρήθηκε!")
 
-    # 3) Reset all sliders/widgets
-    for key in list(st.session_state.keys()):
-        del st.session_state[key]
+    # 3) Clear all Streamlit state
+    st.session_state.clear()
+
+    # 4) Trigger a fresh run so all sliders go back to 0
+    st.rerun()
+
+
 
 
 
