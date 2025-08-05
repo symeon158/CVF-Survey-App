@@ -180,6 +180,8 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+st.write("Streamlit version:", st.__version__)
+
 # Define all 6 elements with their exact OCAI statements
 elements = {
     "Δομικά Χαρακτηριστικά": {
@@ -273,5 +275,6 @@ if st.sidebar.button("Υποβολή", disabled=not all_valid):
 
 
     st.sidebar.success("✅ Η απάντησή σας καταχωρήθηκε!")
+
 
 
