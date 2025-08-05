@@ -251,7 +251,7 @@ for elem, stmts in elements.items():
         key = f"{elem}_{cult}"
         with cols[i]:
             # The "value" argument is removed. State is handled by the key.
-            st.slider(cult, 0, 100, key=key)
+            st.slider(cult, 0, 100, step = 5,  key=key)
             st.caption(desc)
             current_total += st.session_state[key] # Read value directly from state
 
@@ -303,6 +303,7 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
 
