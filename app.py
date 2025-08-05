@@ -15,7 +15,7 @@ st.markdown("""
 .header {
   display: flex;
   align-items: center;
-  background-color: #004d99;
+  background-color: #808080;
   padding: 10px 20px;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -300,6 +300,7 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
 
