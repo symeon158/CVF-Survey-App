@@ -1,6 +1,7 @@
-streamlit==1.18.1
+streamlit>=1.16.0
 pandas
 python-dateutil
 gspread
 oauth2client
+
 
