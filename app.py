@@ -3,6 +3,7 @@ import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
+import streamlit.components.v1 as components # <-- ADD THIS IMPORT
 
 # ——————————————————
 # Page configuration and Custom CSS
@@ -25,11 +26,16 @@ st.markdown("""
 }
 
 /* Button full width */
-.main-button .stButton>button {
+.stButton>button {
     width: 100%;
     background-color: #004d99;
     color: white;
     font-size: 16px;
+}
+/* Center the button */
+.main-button-container {
+    display: flex;
+    justify-content: center;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -55,56 +61,58 @@ def connect_gsheets():
 # ——————————————————
 elements = {
     "Δομικά Χαρακτηριστικά": {
-        "Clan":       "Οργανισμός σαν μεγάλη οικογένεια· συνεργασία & αμοιβαία φροντίδα.",
-        "Adhocracy":  "Δυναμικός & καινοτόμος· ενθάρρυνση ανάληψης ρίσκου.",
-        "Market":     "Ανταγωνιστικός & στοχοπροσηλωμένος· επίτευξη αποτελεσμάτων.",
-        "Hierarchy":  "Ελεγχόμενος & δομημένος· τήρηση επίσημων διαδικασιών."
+        "Clan":      "Οργανισμός σαν μεγάλη οικογένεια· συνεργασία & αμοιβαία φροντίδα.",
+        "Adhocracy": "Δυναμικός & καινοτόμος· ενθάρρυνση ανάληψης ρίσκου.",
+        "Market":    "Ανταγωνιστικός & στοχοπροσηλωμένος· επίτευξη αποτελεσμάτων.",
+        "Hierarchy": "Ελεγχόμενος & δομημένος· τήρηση επίσημων διαδικασιών."
     },
     "Ηγεσία Οργανισμού": {
-        "Clan":       "Οι ηγέτες καθοδηγούν, υποστηρίζουν & χτίζουν εμπιστοσύνη.",
-        "Adhocracy":  "Οι ηγέτες καινοτομούν & ενθαρρύνουν την εξερεύνηση.",
-        "Market":     "Οι ηγέτες απαιτούν αποτελεσματικότητα & νίκη στην αγορά.",
-        "Hierarchy":  "Οι ηγέτες οργανώνουν & ελέγχουν τη λειτουργία αποδοτικά."
+        "Clan":      "Οι ηγέτες καθοδηγούν, υποστηρίζουν & χτίζουν εμπιστοσύνη.",
+        "Adhocracy": "Οι ηγέτες καινοτομούν & ενθαρρύνουν την εξερεύνηση.",
+        "Market":    "Οι ηγέτες απαιτούν αποτελεσματικότητα & νίκη στην αγορά.",
+        "Hierarchy": "Οι ηγέτες οργανώνουν & ελέγχουν τη λειτουργία αποδοτικά."
     },
     "Διαχείριση Προσωπικού": {
-        "Clan":       "Προώθηση ομαδικότητας, συναίνεσης & συμμετοχής.",
-        "Adhocracy":  "Ενθάρρυνση ατομικής ελευθερίας & δημιουργικότητας.",
-        "Market":     "Επιβράβευση επίτευξης στόχων & ανταγωνισμού.",
-        "Hierarchy":  "Διασφάλιση ασφάλειας, σταθερότητας & συμμόρφωσης."
+        "Clan":      "Προώθηση ομαδικότητας, συναίνεσης & συμμετοχής.",
+        "Adhocracy": "Ενθάρρυνση ατομικής ελευθερίας & δημιουργικότητας.",
+        "Market":    "Επιβράβευση επίτευξης στόχων & ανταγωνισμού.",
+        "Hierarchy": "Διασφάλιση ασφάλειας, σταθερότητας & συμμόρφωσης."
     },
     "Συνοχή Οργανισμού": {
-        "Clan":       "Glue: αμοιβαία εμπιστοσύνη & δέσμευση.",
-        "Adhocracy":  "Glue: καινοτομία & όραμα για το μέλλον.",
-        "Market":     "Glue: επίτευξη αποτελεσμάτων & νίκη.",
-        "Hierarchy":  "Glue: τήρηση κανόνων & διαδικασιών."
+        "Clan":      "Glue: αμοιβαία εμπιστοσύνη & δέσμευση.",
+        "Adhocracy": "Glue: καινοτομία & όραμα για το μέλλον.",
+        "Market":    "Glue: επίτευξη αποτελεσμάτων & νίκη.",
+        "Hierarchy": "Glue: τήρηση κανόνων & διαδικασιών."
     },
     "Στρατηγικές Προτεραιότητες": {
-        "Clan":       "Έμφαση στην ανάπτυξη ανθρώπων & σχέσεων.",
-        "Adhocracy":  "Έμφαση σε νέες ιδέες & πειραματισμό.",
-        "Market":     "Έμφαση στην ηγεσία αγοράς & απόδοση.",
-        "Hierarchy":  "Έμφαση στην αποδοτικότητα & σταθερότητα."
+        "Clan":      "Έμφαση στην ανάπτυξη ανθρώπων & σχέσεων.",
+        "Adhocracy": "Έμφαση σε νέες ιδέες & πειραματισμό.",
+        "Market":    "Έμφαση στην ηγεσία αγοράς & απόδοση.",
+        "Hierarchy": "Έμφαση στην αποδοτικότητα & σταθερότητα."
     },
     "Κριτήρια Επιτυχίας": {
-        "Clan":       "Επιτυχία = δέσμευση & ικανοποίηση εργαζομένων.",
-        "Adhocracy":  "Επιτυχία = πρωτοπορία & προσαρμοστικότητα.",
-        "Market":     "Επιτυχία = μερίδιο αγοράς & οικονομικά αποτελέσματα.",
-        "Hierarchy":  "Επιτυχία = συνέπεια, διαδικασίες & χαμηλό κόστος."
+        "Clan":      "Επιτυχία = δέσμευση & ικανοποίηση εργαζομένων.",
+        "Adhocracy": "Επιτυχία = πρωτοπορία & προσαρμοστικότητα.",
+        "Market":    "Επιτυχία = μερίδιο αγοράς & οικονομικά αποτελέσματα.",
+        "Hierarchy": "Επιτυχία = συνέπεια, διαδικασίες & χαμηλό κόστος."
     }
 }
+# Define keys for easier iteration
+demographic_keys = ["division", "level", "gender", "tenure", "generation"]
 
 def build_row():
     """Build a row for Google Sheets from session_state"""
     row = {
         "Timestamp":  datetime.now().isoformat(),
-        "Division":   st.session_state.division,
-        "Level":      st.session_state.level,
-        "Gender":     st.session_state.gender,
-        "Generation": st.session_state.generation,
-        "Tenure":     st.session_state.tenure
+        "Division":   st.session_state.get("division"),
+        "Level":      st.session_state.get("level"),
+        "Gender":     st.session_state.get("gender"),
+        "Generation": st.session_state.get("generation"),
+        "Tenure":     st.session_state.get("tenure")
     }
     for elem, stmts in elements.items():
         for cult in stmts:
-            row[f"{elem}_{cult}"] = st.session_state[f"{elem}_{cult}"]
+            row[f"{elem}_{cult}"] = st.session_state.get(f"{elem}_{cult}", 0)
     return row
 
 # ——————————————————
@@ -117,18 +125,20 @@ divisions = [
     "IT Division", "Production Division", "Logistics Division",
     "Legal Division", "Engineering"
 ]
-levels      = ["Διευθυντής", "Manager", "Διοικητικό Προσωπικό", "Εργατοτεχνικό Προσωπικό"]
-genders     = ["Άνδρας", "Γυναίκα", "Άλλο"]
-tenures     = ["0–1 έτος", "1–3 έτη", "3–5 έτη", "5–10 έτη", "10+ έτη"]
+levels       = ["Διευθυντής", "Manager", "Διοικητικό Προσωπικό", "Εργατοτεχνικό Προσωπικό"]
+genders      = ["Άνδras", "Γυναίκα", "Άλλο"]
+tenures      = ["0–1 έτος", "1–3 έτη", "3–5 έτη", "5–10 έτη", "10+ έτη"]
 generations = ["Gen Z", "Millennials", "Gen X", "Baby Boomers"]
 
-st.sidebar.selectbox("Διεύθυνση", divisions, key="division")
-st.sidebar.selectbox("Επίπεδο", levels, key="level")
-st.sidebar.selectbox("Φύλο", genders, key="gender")
-st.sidebar.selectbox("Προυπηρεσία", tenures, key="tenure")
+# Use a placeholder for the selectboxes to reset them properly
+st.sidebar.selectbox("Διεύθυνση", divisions, key="division", index=None, placeholder="Επιλέξτε Διεύθυνση...")
+st.sidebar.selectbox("Επίπεδο", levels, key="level", index=None, placeholder="Επιλέξτε Επίπεδο...")
+st.sidebar.selectbox("Φύλο", genders, key="gender", index=None, placeholder="Επιλέξτε Φύλο...")
+st.sidebar.selectbox("Προυπηρεσία", tenures, key="tenure", index=None, placeholder="Επιλέξτε Προυπηρεσία...")
 st.sidebar.selectbox(
     "Γενιά", generations, key="generation",
-    help=("Gen Z: 1997–2012\n" 
+    index=None, placeholder="Επιλέξτε Γενιά...",
+    help=("Gen Z: 1997–2012\n"
           "Millennials: 1981–1996\n"
           "Gen X: 1965–1980\n"
           "Baby Boomers: 1946–1964")
@@ -142,14 +152,14 @@ st.sidebar.markdown(
     <div class="project-info">
     <strong>Στόχος Εργασίας</strong><br>
     Συλλογή δεδομένων «Τρέχουσας» οργανωσιακής κουλτούρας<br>
-    βάσει του μοντέλου Competing Values Framework (Cameron & Quinn) 
+    βάσει του μοντέλου Competing Values Framework (Cameron & Quinn)
     με forced distribution 100-πόντων.
 
     <strong>Οδηγίες Συμπλήρωσης</strong><br>
     1. Επιλέξτε τα δημογραφικά σας στοιχεία παραπάνω.<br>
-    2. Για κάθε ομάδα ερωτήσεων (6 στοιχεία κουλτούρας), 
-    κατανεμήστε **ακριβώς 100 πόντους** στους τέσσερις τύπους κουλτούρας (Clan, Adhocracy, Market, Hierarchy).<br>
-    3. Πατήστε **Υποβολή** όταν ολοκληρώσετε.
+    2. Για κάθε ομάδα ερωτήσεων (6 στοιχεία κουλτούρας),
+    κατανεμήστε <strong>ακριβώς 100 πόντους</strong> στους τέσσερις τύπους κουλτούρας (Clan, Adhocracy, Market, Hierarchy).<br>
+    3. Πατήστε <strong>Υποβολή</strong> όταν ολοκληρώσετε.
 
     <strong>Λειτουργικά Σημειώματα</strong><br>
     • Αν κάποιο σύνολο δεν ισούται με 100, το κουμπί υποβολής απενεργοποιείται.<br>
@@ -163,6 +173,9 @@ st.sidebar.markdown(
 # Main: Sliders
 # ——————————————————
 all_valid = True
+# Check if all demographic fields are filled
+all_demographics_filled = all(st.session_state.get(key) for key in demographic_keys)
+
 for elem, stmts in elements.items():
     st.subheader(elem)
     cols = st.columns(4)
@@ -181,20 +194,62 @@ for elem, stmts in elements.items():
     st.markdown("---")
 
 # ——————————————————
-# Submission callback
+# Submission callback (MODIFIED SECTION)
 # ——————————————————
 def submit_callback():
+    """Builds row, appends to GSheets, then clears state."""
     row = build_row()
     connect_gsheets().append_row(list(row.values()))
-    # clear everything and set flag
-    st.session_state.clear()
+
+    # --- Start of new clearing logic ---
+    # 1. Clear survey slider values
+    for elem, stmts in elements.items():
+        for cult in stmts:
+            st.session_state[f"{elem}_{cult}"] = 0 # Reset to 0
+
+    # 2. Clear demographic selectbox values
+    for key in demographic_keys:
+        if key in st.session_state:
+            del st.session_state[key]
+    # --- End of new clearing logic ---
+
+    # 3. Set flag to show success message and trigger scroll
     st.session_state["just_submitted"] = True
 
-# Button container for full-width styling
-st.markdown('<div class="main-button"></div>', unsafe_allow_html=True)
-st.button("Υποβολή", disabled=not all_valid, on_click=submit_callback)
+# Disable button if sliders are not 100 or if demographics are incomplete
+is_disabled = not all_valid or not all_demographics_filled
+submit_tooltip = ""
+if not all_demographics_filled:
+    submit_tooltip = "Παρακαλώ συμπληρώστε όλα τα δημογραφικά στοιχεία."
+elif not all_valid:
+    submit_tooltip = "Παρακαλώ διορθώστε τα σύνολα ώστε να είναι 100."
 
-# ——————————————————\# Banner at bottom
+
+# Centered button using columns
+col1, col2, col3 = st.columns([1, 1, 1])
+with col2:
+    st.button("Υποβολή",
+              disabled=is_disabled,
+              on_click=submit_callback,
+              use_container_width=True,
+              help=submit_tooltip
+             )
+
+# ——————————————————
+# Banner at bottom (MODIFIED SECTION)
+# ——————————————————
 if st.session_state.get("just_submitted"):
-    st.success("✅ Η απάντησή σας καταχωρήθηκε!")
+    st.success("✅ Η απάντησή σας καταχωρήθηκε με επιτυχία!")
+
+    # 1. JavaScript to scroll to the bottom
+    components.html(
+        """
+        <script>
+            window.parent.document.body.scrollTop = window.parent.document.body.scrollHeight;
+            window.parent.document.documentElement.scrollTop = window.parent.document.documentElement.scrollHeight;
+        </script>
+        """,
+        height=0 # Set height to 0 to not take up any space
+    )
+    # 2. Clean up the flag
     st.session_state.pop("just_submitted")
