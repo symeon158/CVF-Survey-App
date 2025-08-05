@@ -174,8 +174,8 @@ def submit_callback():
 # ——————————————————
 # Sidebar: Demographics (with keys)
 # ——————————————————
-#st.sidebar.title("👤 Δημογραφικά Στοιχεία")
-LOGO_URL = "https://yourcompany.com/assets/logo.png"  # <-- replace with your real logo URL
+st.sidebar.title("👤 Δημογραφικά Στοιχεία")
+LOGO_URL = "https://aldom.gr/wp-content/uploads/2020/05/alumil.png"  
 st.markdown(f"""
 <div class="header">
   <img src="{LOGO_URL}" alt="Company Logo">
@@ -299,5 +299,6 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
