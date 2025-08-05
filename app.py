@@ -246,7 +246,7 @@ for elem, stmts in elements.items():
     st.markdown("---")
 
 # Submit & clear callback
-if st.sidebar.button("Υποβολή", disabled=not all_valid):
+if st.button("Υποβολή", disabled=not all_valid):
     # Build data row
     row = {
         "Timestamp":  datetime.now().isoformat(),
@@ -275,6 +275,7 @@ if st.sidebar.button("Υποβολή", disabled=not all_valid):
 
 
     st.sidebar.success("✅ Η απάντησή σας καταχωρήθηκε!")
+
 
 
 
