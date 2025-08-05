@@ -134,7 +134,7 @@ for elem, stmts in elements.items():
 def build_row():
     """Build a row for Google Sheets from session_state"""
     row = {
-        "Timestamp": datetime.now().isoformat(),
+        "Timestamp": datetime.now(ZoneInfo("Europe/Athens")).isoformat(),
         "Division": st.session_state.get("division"),
         "Level": st.session_state.get("level"),
         "Gender": st.session_state.get("gender"),
@@ -303,6 +303,7 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
 
