@@ -244,10 +244,10 @@ for elem, stmts in elements.items():
 
     responses[elem] = scores
     st.markdown("---")
+submit = st.button("Υποβολή", disabled=not all_valid)
 
-# Submit & clear callback
-if st.button("Υποβολή", disabled=not all_valid):
-    # Build data row
+if submit:
+    # Build the row
     row = {
         "Timestamp":  datetime.now().isoformat(),
         "Division":   division,
@@ -260,21 +260,17 @@ if st.button("Υποβολή", disabled=not all_valid):
         for cult, val in scores.items():
             row[f"{elem}_{cult}"] = val
 
-    # Serialize and append
+    # Append once
     values = [v.item() if hasattr(v, "item") else v for v in row.values()]
     connect_gsheets().append_row(values)
 
-    # Clear form
-    st.session_state.clear()
-        # Append to sheet…
-    connect_gsheets().append_row(values)
-
-    # Clear form and rerun
+    # Clear state and rerun
     st.session_state.clear()
     st.rerun()
 
+    # Show confirmation
+    st.success("✅ Η απάντησή σας καταχωρήθηκε!")
 
-    st.sidebar.success("✅ Η απάντησή σας καταχωρήθηκε!")
 
 
 
