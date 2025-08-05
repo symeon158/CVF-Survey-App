@@ -11,7 +11,7 @@ import streamlit.components.v1 as components
 st.set_page_config(page_title="CVF Survey", layout="wide")
 st.markdown("""
 <style>
-* Header styling */
+/* Header styling */
 .header {
   display: flex;
   align-items: center;
@@ -300,6 +300,7 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
 
