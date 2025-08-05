@@ -264,6 +264,13 @@ if st.sidebar.button("Υποβολή", disabled=not all_valid):
 
     # Clear form
     st.session_state.clear()
-    st.experimental_rerun()
+        # Append to sheet…
+    connect_gsheets().append_row(values)
+
+    # Clear form and rerun
+    st.session_state.clear()
+    st.experimental_request_rerun()
+
 
     st.sidebar.success("✅ Η απάντησή σας καταχωρήθηκε!")
+
