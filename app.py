@@ -222,55 +222,75 @@ elements = {
     }
 }
 
-# Collect responses and validate
-all_valid = True
-responses = {}
+# Helper to build the GS row
+def build_row():
+    row = {
+        "Timestamp":  datetime.now().isoformat(),
+        "Division":   st.session_state.division,
+        "Level":      st.session_state.level,
+        "Gender":     st.session_state.gender,
+        "Generation": st.session_state.generation,
+        "Tenure":     st.session_state.tenure
+    }
+    for elem, stmts in elements.items():
+        for cult in stmts:
+            row[f"{elem}_{cult}"] = st.session_state[f"{elem}_{cult}"]
+    return row
 
+# 1) At script top, if we just came from a submit, clear sliders & show banner
+if st.session_state.get("just_submitted"):
+    # clear every slider key
+    for elem, stmts in elements.items():
+        for cult in stmts:
+            key = f"{elem}_{cult}"
+            st.session_state.pop(key, None)
+    # also pop our flag so it only fires once
+    st.session_state.pop("just_submitted")
+    st.success("✅ Η απάντησή σας καταχωρήθηκε!")
+
+# 2) Build your sidebar demographics exactly the same, but save into session_state
+st.sidebar.selectbox("Διεύθυνση", divisions, key="division")
+st.sidebar.selectbox("Επίπεδο",    levels,    key="level")
+st.sidebar.selectbox("Φύλο",        genders,   key="gender")
+st.sidebar.selectbox("Προυπηρεσία", tenures,   key="tenure")
+st.sidebar.selectbox(
+    "Γενιά", 
+    generations, 
+    key="generation",
+    help=( "Gen Z: 1997–2012\n"
+           "Millennials: 1981–1996\n"
+           "Gen X: 1965–1980\n"
+           "Baby Boomers: 1946–1964" )
+)
+
+# 3) Render your sliders, saving each into session_state
+all_valid = True
 for elem, stmts in elements.items():
     st.subheader(elem)
-    cols  = st.columns(4)
+    cols = st.columns(4)
     total = 0
-    scores = {}
-    for i, (culture, description) in enumerate(stmts.items()):
+    for i, (cult, desc) in enumerate(stmts.items()):
+        key = f"{elem}_{cult}"
         with cols[i]:
-            score = st.slider(f"{culture}", 0, 100, key=f"{elem}_{culture}")
-            st.caption(description)
-            scores[culture] = score
-            total += score
-
+            val = st.slider(cult, 0, 100,
+                            # use existing state or 0
+                            value=st.session_state.get(key, 0),
+                            key=key)
+            st.caption(desc)
+            total += val
     if total != 100:
         st.error(f"❌ Το σύνολο στο στοιχείο «{elem}» πρέπει να είναι 100 (έχει: {total}).")
         all_valid = False
-
-    responses[elem] = scores
     st.markdown("---")
-# … after collecting `responses` and computing `all_valid` …
 
-submit = st.button("Υποβολή", disabled=not all_valid)
-if submit:
-    # 1) Push to Google Sheets
-    row = {
-        "Timestamp":  datetime.now().isoformat(),
-        "Division":   division,
-        "Level":      level,
-        "Gender":     gender,
-        "Generation": generation,
-        "Tenure":     tenure
-    }
-    for elem, scores in responses.items():
-        for cult, val in scores.items():
-            row[f"{elem}_{cult}"] = val
+# 4) Use on_click callback to append & set our “just_submitted” flag
+def submit_callback():
+    row = build_row()
     connect_gsheets().append_row(list(row.values()))
+    # tell the next run we just submitted
+    st.session_state["just_submitted"] = True
 
-    # 2) Show the success message before anything else
-    st.success("✅ Η απάντησή σας καταχωρήθηκε!")
-
-    # 3) Clear all Streamlit state
-    st.session_state.clear()
-
-    # 4) Trigger a fresh run so all sliders go back to 0
-    st.rerun()
-
+st.button("Υποβολή", disabled=not all_valid, on_click=submit_callback)
 
 
 
