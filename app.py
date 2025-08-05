@@ -186,7 +186,21 @@ st.sidebar.subheader("ℹ️ Σχετικά με το Project")
 st.sidebar.markdown(
     """
     <div class="project-info">
-    ... (Your project info here) ...
+    <strong>Στόχος Εργασίας</strong><br>
+    Συλλογή δεδομένων «Τρέχουσας» οργανωσιακής κουλτούρας<br>
+    βάσει του μοντέλου Competing Values Framework (Cameron & Quinn) 
+    με forced distribution 100-πόντων.
+
+    <strong>Οδηγίες Συμπλήρωσης</strong><br>
+    1. Επιλέξτε τα δημογραφικά σας στοιχεία παραπάνω.<br>
+    2. Για κάθε ομάδα ερωτήσεων (6 στοιχεία κουλτούρας), 
+    κατανεμήστε **ακριβώς 100 πόντους** στους τέσσερις τύπους κουλτούρας (Clan, Adhocracy, Market, Hierarchy).<br>
+    3. Πατήστε **Υποβολή** όταν ολοκληρώσετε.
+
+    <strong>Λειτουργικά Σημειώματα</strong><br>
+    • Αν κάποιο σύνολο δεν ισούται με 100, το κουμπί υποβολής απενεργοποιείται.<br>
+    • Για υποστήριξη, επικοινωνήστε: <br>
+      📧 sy.papadopoulos@alumil.com
     </div>
     """, unsafe_allow_html=True
 )
@@ -258,3 +272,4 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
