@@ -237,33 +237,30 @@ def build_row():
             row[f"{elem}_{cult}"] = st.session_state[f"{elem}_{cult}"]
     return row
 
-# 1) At script top, if we just came from a submit, clear sliders & show banner
+# 1) On a fresh run right after a submit, clear slider *and* demographic keys
 if st.session_state.get("just_submitted"):
-    # clear every slider key
+    # clear all sliders
     for elem, stmts in elements.items():
         for cult in stmts:
             key = f"{elem}_{cult}"
             st.session_state.pop(key, None)
-    # also pop our flag so it only fires once
-    st.session_state.pop("just_submitted")
-    st.success("✅ Η απάντησή σας καταχωρήθηκε!")
 
-# 2) Build your sidebar demographics exactly the same, but save into session_state
-st.sidebar.selectbox("Διεύθυνση", divisions, key="division")
-st.sidebar.selectbox("Επίπεδο",    levels,    key="level")
-st.sidebar.selectbox("Φύλο",        genders,   key="gender")
-st.sidebar.selectbox("Προυπηρεσία", tenures,   key="tenure")
-st.sidebar.selectbox(
-    "Γενιά", 
-    generations, 
-    key="generation",
-    help=( "Gen Z: 1997–2012\n"
-           "Millennials: 1981–1996\n"
-           "Gen X: 1965–1980\n"
-           "Baby Boomers: 1946–1964" )
-)
+    # clear demographics
+    for demo_key in ["division","level","gender","tenure","generation"]:
+        st.session_state.pop(demo_key, None)
 
-# 3) Render your sliders, saving each into session_state
+    # leave just_submitted intact until bottom
+
+
+# 2) Sidebar demographics (with keys!)
+st.sidebar.selectbox("Διεύθυνση", divisions,    key="division")
+st.sidebar.selectbox("Επίπεδο",    levels,       key="level")
+st.sidebar.selectbox("Φύλο",        genders,      key="gender")
+st.sidebar.selectbox("Προυπηρεσία", tenures,      key="tenure")
+st.sidebar.selectbox("Γενιά",       generations,  key="generation",
+                    help="Gen Z: 1997–2012\nMillennials: 1981–1996\nGen X: 1965–1980\nBaby Boomers: 1946–1964")
+
+# 3) Sliders (with keys, defaults come from session_state or 0)
 all_valid = True
 for elem, stmts in elements.items():
     st.subheader(elem)
@@ -273,7 +270,6 @@ for elem, stmts in elements.items():
         key = f"{elem}_{cult}"
         with cols[i]:
             val = st.slider(cult, 0, 100,
-                            # use existing state or 0
                             value=st.session_state.get(key, 0),
                             key=key)
             st.caption(desc)
@@ -283,14 +279,32 @@ for elem, stmts in elements.items():
         all_valid = False
     st.markdown("---")
 
-# 4) Use on_click callback to append & set our “just_submitted” flag
+# 4) Submission callback
 def submit_callback():
-    row = build_row()
+    # build row from session_state
+    row = {
+        "Timestamp":  datetime.now().isoformat(),
+        "Division":   st.session_state.division,
+        "Level":      st.session_state.level,
+        "Gender":     st.session_state.gender,
+        "Generation": st.session_state.generation,
+        "Tenure":     st.session_state.tenure
+    }
+    for elem, stmts in elements.items():
+        for cult in stmts:
+            row[f"{elem}_{cult}"] = st.session_state[f"{elem}_{cult}"]
     connect_gsheets().append_row(list(row.values()))
-    # tell the next run we just submitted
+    # flag that we just submitted
     st.session_state["just_submitted"] = True
 
 st.button("Υποβολή", disabled=not all_valid, on_click=submit_callback)
+
+# 5) **After everything**: show banner at bottom if needed
+if st.session_state.get("just_submitted"):
+    st.success("✅ Η απάντησή σας καταχωρήθηκε!")
+    # now clear the flag so it only shows once
+    st.session_state.pop("just_submitted")
+
 
 
 
