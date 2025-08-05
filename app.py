@@ -5,8 +5,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 
 # ——————————————————
-# Custom CSS for styling
+# Page configuration and Custom CSS
 # ——————————————————
+st.set_page_config(page_title="CVF Survey", layout="wide")
 st.markdown("""
 <style>
 /* Sidebar width */
@@ -23,12 +24,12 @@ st.markdown("""
   color: #333;
 }
 
-/* Sidebar button full width */
-.sidebar .stButton>button {
-  width: 100%;
-  background-color: #004d99;
-  color: white;
-  font-size: 16px;
+/* Button full width */
+.main-button .stButton>button {
+    width: 100%;
+    background-color: #004d99;
+    color: white;
+    font-size: 16px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -38,10 +39,10 @@ st.markdown("""
 # ——————————————————
 def connect_gsheets():
     scope = [
-      "https://spreadsheets.google.com/feeds",
-      "https://www.googleapis.com/auth/spreadsheets",
-      "https://www.googleapis.com/auth/drive.file",
-      "https://www.googleapis.com/auth/drive"
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive.file",
+        "https://www.googleapis.com/auth/drive"
     ]
     creds_dict = st.secrets["GOOGLE_CREDENTIALS"]
     creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
@@ -50,139 +51,8 @@ def connect_gsheets():
     return client.open_by_key(SPREADSHEET_ID).sheet1
 
 # ——————————————————
-# Sidebar: Demographics & Project Info
+# Define survey structure
 # ——————————————————
-st.sidebar.title("👤 Δημογραφικά Στοιχεία")
-divisions = [
-    "General Management",
-    "Innovation",
-    "Operations Division",
-    "Sales Division",
-    "Finance Division",
-    "Human Resources Division",
-    "IT Division",
-    "Production Division",
-    "Logistics Division",
-    "Legal Division",
-    "Engineering"
-]
- 
-levels      = ["Διευθυντής", "Manager", "Διοικητικό Προσωπικό", "Εργατοτεχνικό Προσωπικό"]
-genders     = ["Άνδρας", "Γυναίκα", "Άλλο"]
-generations = ["Gen Z", "Millennials", "Gen X", "Baby Boomers"]
-
-
-tenures     = ["0–1 έτος", "1–3 έτη", "3–5 έτη", "5–10 έτη", "10+ έτη"]
-
-division   = st.sidebar.selectbox("Διεύθυνση", divisions)
-level      = st.sidebar.selectbox("Επίπεδο", levels)
-gender     = st.sidebar.selectbox("Φύλο", genders)
-tenure     = st.sidebar.selectbox("Προυπηρεσία", tenures)
-generation = st.sidebar.selectbox(
-    "Γενιά", 
-    generations, 
-    help=(
-        "Gen Z: 1997–2012\n"
-        "Millennials: 1981–1996\n"
-        "Gen X: 1965–1980\n"
-        "Baby Boomers: 1946–1964"
-    )
-)
-
-st.sidebar.markdown("---")
-st.sidebar.subheader("ℹ️ Σχετικά με το Project")
-st.sidebar.markdown(
-    """
-    <div class="project-info">
-    <strong>Στόχος Εργασίας</strong><br>
-    Συλλογή δεδομένων «Τρέχουσας» οργανωσιακής κουλτούρας<br>
-    βάσει του μοντέλου Competing Values Framework (Cameron & Quinn) 
-    με forced distribution 100-πόντων.
-
-    <strong>Οδηγίες Συμπλήρωσης</strong><br>
-    1. Επιλέξτε τα δημογραφικά σας στοιχεία παραπάνω.<br>
-    2. Για κάθε ομάδα ερωτήσεων (6 στοιχεία κουλτούρας), 
-    κατανεμήστε **ακριβώς 100 πόντους** στους τέσσερις τύπους κουλτούρας (Clan, Adhocracy, Market, Hierarchy).<br>
-    3. Πατήστε **Υποβολή** όταν ολοκληρώσετε.
-
-    <strong>Λειτουργικά Σημειώματα</strong><br>
-    • Αν κάποιο σύνολο δεν ισούται με 100, το κουμπί υποβολής απενεργοποιείται.<br>
-    • Για υποστήριξη, επικοινωνήστε: <br>
-      📧 sy.papadopoulos@alumil.com
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-# ——————————————————
-# Main page: Survey
-# ——————————————————
-st.set_page_config(page_title="CVF Survey", layout="wide")
-#st.title("📝 Έρευνα Οργανωσιακής Κουλτούρας (CVF)")
-# ——————————————————
-# Custom CSS for styling header & sidebar
-# ——————————————————
-st.markdown("""
-<style>
-/* Header styling */
-.header {
-  display: flex;
-  align-items: center;
-  background-color: #B2B2B2;
-  padding: 10px 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-.header img {
-  height: 60px;
-  margin-right: 15px;
-}
-.header h1 {
-  color: white;
-  font-size: 28px;
-  margin: 0;
-}
-
-/* Sidebar width */
-.css-1d391kg {
-  width: 320px;
-}
-
-/* Project Info box */
-.project-info {
-  background-color: #f0f2f6;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #333;
-}
-
-/* Sidebar button full width */
-.sidebar .stButton>button {
-  width: 100%;
-  background-color: #004d99;
-  color: white;
-  font-size: 16px;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# ——————————————————
-# Branded header with logo
-# ——————————————————
-LOGO_URL = "https://aldom.gr/wp-content/uploads/2020/05/alumil.png"  # <-- replace with your real logo URL
-st.markdown(f"""
-<div class="header">
-  <img src="{LOGO_URL}" alt="Company Logo">
-  <h1>Έρευνα Οργανωσιακής Κουλτούρας (CVF)</h1>
-</div>
-""", unsafe_allow_html=True)
-
-st.write("Streamlit version:", st.__version__)
-
-# Define all 6 elements with their exact OCAI statements
 elements = {
     "Δομικά Χαρακτηριστικά": {
         "Clan":       "Οργανισμός σαν μεγάλη οικογένεια· συνεργασία & αμοιβαία φροντίδα.",
@@ -222,8 +92,8 @@ elements = {
     }
 }
 
-# Helper to build the GS row
 def build_row():
+    """Build a row for Google Sheets from session_state"""
     row = {
         "Timestamp":  datetime.now().isoformat(),
         "Division":   st.session_state.division,
@@ -237,30 +107,61 @@ def build_row():
             row[f"{elem}_{cult}"] = st.session_state[f"{elem}_{cult}"]
     return row
 
-# 1) On a fresh run right after a submit, clear slider *and* demographic keys
-if st.session_state.get("just_submitted"):
-    # clear all sliders
-    for elem, stmts in elements.items():
-        for cult in stmts:
-            key = f"{elem}_{cult}"
-            st.session_state.pop(key, None)
+# ——————————————————
+# Sidebar: Demographics (with keys)
+# ——————————————————
+st.sidebar.title("👤 Δημογραφικά Στοιχεία")
+divisions = [
+    "General Management", "Innovation", "Operations Division",
+    "Sales Division", "Finance Division", "Human Resources Division",
+    "IT Division", "Production Division", "Logistics Division",
+    "Legal Division", "Engineering"
+]
+levels      = ["Διευθυντής", "Manager", "Διοικητικό Προσωπικό", "Εργατοτεχνικό Προσωπικό"]
+genders     = ["Άνδρας", "Γυναίκα", "Άλλο"]
+tenures     = ["0–1 έτος", "1–3 έτη", "3–5 έτη", "5–10 έτη", "10+ έτη"]
+generations = ["Gen Z", "Millennials", "Gen X", "Baby Boomers"]
 
-    # clear demographics
-    for demo_key in ["division","level","gender","tenure","generation"]:
-        st.session_state.pop(demo_key, None)
+st.sidebar.selectbox("Διεύθυνση", divisions, key="division")
+st.sidebar.selectbox("Επίπεδο", levels, key="level")
+st.sidebar.selectbox("Φύλο", genders, key="gender")
+st.sidebar.selectbox("Προυπηρεσία", tenures, key="tenure")
+st.sidebar.selectbox(
+    "Γενιά", generations, key="generation",
+    help=("Gen Z: 1997–2012\n" 
+          "Millennials: 1981–1996\n"
+          "Gen X: 1965–1980\n"
+          "Baby Boomers: 1946–1964")
+)
 
-    # leave just_submitted intact until bottom
+# Project info box
+st.sidebar.markdown("---")
+st.sidebar.subheader("ℹ️ Σχετικά με το Project")
+st.sidebar.markdown(
+    """
+    <div class="project-info">
+    <strong>Στόχος Εργασίας</strong><br>
+    Συλλογή δεδομένων «Τρέχουσας» οργανωσιακής κουλτούρας<br>
+    βάσει του μοντέλου Competing Values Framework (Cameron & Quinn) 
+    με forced distribution 100-πόντων.
 
+    <strong>Οδηγίες Συμπλήρωσης</strong><br>
+    1. Επιλέξτε τα δημογραφικά σας στοιχεία παραπάνω.<br>
+    2. Για κάθε ομάδα ερωτήσεων (6 στοιχεία κουλτούρας), 
+    κατανεμήστε **ακριβώς 100 πόντους** στους τέσσερις τύπους κουλτούρας (Clan, Adhocracy, Market, Hierarchy).<br>
+    3. Πατήστε **Υποβολή** όταν ολοκληρώσετε.
 
-# 2) Sidebar demographics (with keys!)
-st.sidebar.selectbox("Διεύθυνση", divisions,    key="division")
-st.sidebar.selectbox("Επίπεδο",    levels,       key="level")
-st.sidebar.selectbox("Φύλο",        genders,      key="gender")
-st.sidebar.selectbox("Προυπηρεσία", tenures,      key="tenure")
-st.sidebar.selectbox("Γενιά",       generations,  key="generation",
-                    help="Gen Z: 1997–2012\nMillennials: 1981–1996\nGen X: 1965–1980\nBaby Boomers: 1946–1964")
+    <strong>Λειτουργικά Σημειώματα</strong><br>
+    • Αν κάποιο σύνολο δεν ισούται με 100, το κουμπί υποβολής απενεργοποιείται.<br>
+    • Για υποστήριξη, επικοινωνήστε: <br>
+      📧 sy.papadopoulos@alumil.com
+    </div>
+    """, unsafe_allow_html=True
+)
 
-# 3) Sliders (with keys, defaults come from session_state or 0)
+# ——————————————————
+# Main: Sliders
+# ——————————————————
 all_valid = True
 for elem, stmts in elements.items():
     st.subheader(elem)
@@ -279,38 +180,21 @@ for elem, stmts in elements.items():
         all_valid = False
     st.markdown("---")
 
-# 4) Submission callback
+# ——————————————————
+# Submission callback
+# ——————————————————
 def submit_callback():
-    # build row from session_state
-    row = {
-        "Timestamp":  datetime.now().isoformat(),
-        "Division":   st.session_state.division,
-        "Level":      st.session_state.level,
-        "Gender":     st.session_state.gender,
-        "Generation": st.session_state.generation,
-        "Tenure":     st.session_state.tenure
-    }
-    for elem, stmts in elements.items():
-        for cult in stmts:
-            row[f"{elem}_{cult}"] = st.session_state[f"{elem}_{cult}"]
+    row = build_row()
     connect_gsheets().append_row(list(row.values()))
-    # flag that we just submitted
+    # clear everything and set flag
+    st.session_state.clear()
     st.session_state["just_submitted"] = True
 
+# Button container for full-width styling
+st.markdown('<div class="main-button"></div>', unsafe_allow_html=True)
 st.button("Υποβολή", disabled=not all_valid, on_click=submit_callback)
 
-# 5) **After everything**: show banner at bottom if needed
+# ——————————————————\# Banner at bottom
 if st.session_state.get("just_submitted"):
     st.success("✅ Η απάντησή σας καταχωρήθηκε!")
-    # now clear the flag so it only shows once
     st.session_state.pop("just_submitted")
-
-
-
-
-
-
-
-
-
-
