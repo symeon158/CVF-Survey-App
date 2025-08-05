@@ -271,10 +271,11 @@ if st.sidebar.button("Υποβολή", disabled=not all_valid):
 
     # Clear form and rerun
     st.session_state.clear()
-    st.experimental_rerun()
+    st.rerun()
 
 
     st.sidebar.success("✅ Η απάντησή σας καταχωρήθηκε!")
+
 
 
 
