@@ -11,6 +11,25 @@ import streamlit.components.v1 as components
 st.set_page_config(page_title="CVF Survey", layout="wide")
 st.markdown("""
 <style>
+* Header styling */
+.header {
+  display: flex;
+  align-items: center;
+  background-color: #004d99;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.header img {
+  height: 60px;
+  margin-right: 15px;
+}
+.header h1 {
+  color: white;
+  font-size: 28px;
+  margin: 0;
+}
+
 /* Sidebar width */
 .css-1d391kg { width: 320px; }
 
@@ -155,7 +174,15 @@ def submit_callback():
 # ——————————————————
 # Sidebar: Demographics (with keys)
 # ——————————————————
-st.sidebar.title("👤 Δημογραφικά Στοιχεία")
+#st.sidebar.title("👤 Δημογραφικά Στοιχεία")
+LOGO_URL = "https://yourcompany.com/assets/logo.png"  # <-- replace with your real logo URL
+st.markdown(f"""
+<div class="header">
+  <img src="{LOGO_URL}" alt="Company Logo">
+  <h1>Έρευνα Οργανωσιακής Κουλτούρας (CVF)</h1>
+</div>
+""", unsafe_allow_html=True)
+
 divisions = [
     "General Management", "Innovation", "Operations Division",
     "Sales Division", "Finance Division", "Human Resources Division",
@@ -272,4 +299,5 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
