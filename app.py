@@ -247,7 +247,7 @@ for elem, stmts in elements.items():
 submit = st.button("Υποβολή", disabled=not all_valid)
 
 if submit:
-    # Build the row
+    # 1) Append to Google Sheets
     row = {
         "Timestamp":  datetime.now().isoformat(),
         "Division":   division,
@@ -260,16 +260,16 @@ if submit:
         for cult, val in scores.items():
             row[f"{elem}_{cult}"] = val
 
-    # Append once
-    values = [v.item() if hasattr(v, "item") else v for v in row.values()]
-    connect_gsheets().append_row(values)
+    connect_gsheets().append_row(list(row.values()))
 
-    # Clear state and rerun
-    st.session_state.clear()
-    st.rerun()
-
-    # Show confirmation
+    # 2) Show confirmation
     st.success("✅ Η απάντησή σας καταχωρήθηκε!")
+
+    # 3) Reset all sliders/widgets
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+
+
 
 
 
