@@ -176,12 +176,7 @@ def submit_callback():
 # ——————————————————
 st.sidebar.title("👤 Δημογραφικά Στοιχεία")
 LOGO_URL = "https://aldom.gr/wp-content/uploads/2020/05/alumil.png"  
-st.markdown(f"""
-<div class="header">
-  <img src="{LOGO_URL}" alt="Company Logo">
-  <h1>Έρευνα Οργανωσιακής Κουλτούρας (CVF)</h1>
-</div>
-""", unsafe_allow_html=True)
+
 
 divisions = [
     "General Management", "Innovation", "Operations Division",
@@ -235,7 +230,13 @@ st.sidebar.markdown(
 # ——————————————————
 # Main: Sliders (MODIFIED)
 # ——————————————————
-st.title("Έρευνα Οργανωσιακής Κουλτούρας (CVF)")
+#st.title("Έρευνα Οργανωσιακής Κουλτούρας (CVF)")
+st.markdown(f"""
+<div class="header">
+  <img src="{LOGO_URL}" alt="Company Logo">
+  <h1>Έρευνα Οργανωσιακής Κουλτούρας (CVF)</h1>
+</div>
+""", unsafe_allow_html=True)
 st.markdown("---")
 
 all_totals_are_100 = True
@@ -299,6 +300,7 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
 
