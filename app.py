@@ -250,14 +250,19 @@ for elem, stmts in elements.items():
     for i, (cult, desc) in enumerate(stmts.items()):
         key = f"{elem}_{cult}"
         with cols[i]:
-            # The "value" argument is removed. State is handled by the key.
-            st.slider(cult, 0, 100, step = 10,  key=key)
+            st.slider(cult, 0, 100, step=10, key=key)
             st.caption(desc)
-            current_total += st.session_state[key] # Read value directly from state
+            current_total += st.session_state[key]
 
+    # --- THIS BLOCK IS THE FIX ---
+    # Check if the total is correct
     if current_total != 100:
-        st.error(f"❌ Το σύνολο στο στοιχείο «{elem}» πρέπει να είναι 100 (τώρα: {current_total}).")
-        all_totals_are_100 = False
+        all_totals_are_100 = False # Always update the validation flag
+        # But only SHOW the error message if we haven't just submitted.
+        if not st.session_state.get("just_submitted"):
+            st.error(f"❌ Το σύνολο στο στοιχείο «{elem}» πρέπει να είναι 100 (τώρα: {current_total}).")
+    # --- END OF FIX ---
+            
     st.markdown("---")
 
 # ——————————————————
@@ -303,6 +308,7 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
 
