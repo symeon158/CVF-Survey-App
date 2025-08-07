@@ -315,7 +315,7 @@ for elem, stmts in elements.items():
     for i, (cult, desc) in enumerate(stmts.items()):
         key = f"{elem}_{cult}"
         with cols[i]:
-            st.slider(cult, 0, 100, step=10, key=key)
+            st.slider(cult, 0, 100, step=5, key=key)
             st.caption(desc)
             current_total += st.session_state[key]
     
@@ -372,6 +372,7 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
 
