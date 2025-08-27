@@ -1,19 +1,20 @@
-# Python cache 
-__pycache__/ 
-*.py[cod] 
+# Python cache
+__pycache__/
+*.py[cod]
 
-# Virtual envs 
-.env/ 
-*.venv/ 
+# Virtual envs
+.env/
+*.venv/
 
-# Streamlit, VSCode, Mac files 
-.vscode/ 
-.DS_Store 
+# Streamlit, VSCode, Mac files
+.vscode/
+.DS_Store
 
-# Ignore only secrets (όχι όλο τον φάκελο .streamlit, για να μπορείς να ανεβάζεις config.toml αν θες)
+# Ignore only secrets (not the whole .streamlit folder)
+# This allows you to commit a config.toml if you want.
 .streamlit/secrets.toml
 
-# If you δημιούργησες root secrets.toml για Render
+# Ignore root secrets.toml for Render deployment
 secrets.toml
 
 # Never commit raw credentials
