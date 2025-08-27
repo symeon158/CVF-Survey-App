@@ -3,5 +3,7 @@ pandas
 python-dateutil
 gspread
 oauth2client
+toml
+
 
 
