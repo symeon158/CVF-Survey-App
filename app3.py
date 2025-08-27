@@ -287,11 +287,11 @@ st.sidebar.selectbox(
           "Baby Boomers: 1946–1964")
 )
 
-# try:
-#     st.sidebar.caption(f"Service account: {load_google_creds().get('client_email')}")
-# except Exception as e:
-#     st.sidebar.error(f"Secrets not loaded: {e}")
-
+try:
+    st.sidebar.caption(f"Service account: {load_google_creds().get('client_email')}")
+except Exception as e:
+    st.sidebar.error(f"Secrets not loaded: {e}")
+  
 # Project info box
 st.sidebar.markdown("---")
 st.sidebar.subheader("ℹ️ Σχετικά με το Project")
@@ -401,6 +401,7 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
 
