@@ -4,6 +4,9 @@ python-dateutil
 gspread
 oauth2client
 toml
+gspread_dataframe
+Pillow
+
 
 
 
