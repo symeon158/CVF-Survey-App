@@ -255,13 +255,20 @@ st.sidebar.selectbox("Επίπεδο", levels, key="level", index=None, placehol
 st.sidebar.selectbox("Φύλο", genders, key="gender", index=None, placeholder="Επιλέξτε Φύλο...")
 st.sidebar.selectbox("Προυπηρεσία", tenures, key="tenure", index=None, placeholder="Επιλέξτε Προυπηρεσία...")
 st.sidebar.selectbox(
-    "Γενιά", generations, key="generation",
-    index=None, placeholder="Επιλέξτε Γενιά...",
-    help=("Gen Z: 1997–2012\n"
-          "Millennials: 1981–1996\n"
-          "Gen X: 1965–1980\n"
-          "Baby Boomers: 1946–1964")
+    "Γενιά",
+    generations,
+    key="generation",
+    index=None,
+    placeholder="Επιλέξτε Γενιά...",
+    help=(
+        "📌 Ορισμοί γενεών:\n"
+        "• Gen Z: 1997–2012\n"
+        "• Millennials: 1981–1996\n"
+        "• Gen X: 1965–1980\n"
+        "• Baby Boomers: 1946–1964"
+    )
 )
+
 
 # Project info box
 st.sidebar.markdown("---")
@@ -372,6 +379,7 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
 
