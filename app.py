@@ -248,7 +248,7 @@ divisions = [
 levels = ["Διευθυντής", "Manager", "Διοικητικό Προσωπικό", "Εργατοτεχνικό Προσωπικό"]
 genders = ["Άνδρας", "Γυναίκα", "Άλλο"]
 tenures = ["0–1 έτος", "1–3 έτη", "3–5 έτη", "5–10 έτη", "10+ έτη"]
-generations = ["Gen Z", "Millennials", "Gen X", "Baby Boomers"]
+generations = ["1997–2012", "1981–1996", "1965–1980", "1946–1964"]
 
 st.sidebar.selectbox("Διεύθυνση", divisions, key="division", index=None, placeholder="Επιλέξτε Διεύθυνση...")
 st.sidebar.selectbox("Επίπεδο", levels, key="level", index=None, placeholder="Επιλέξτε Επίπεδο...")
@@ -379,6 +379,7 @@ if st.session_state.get("just_submitted"):
     del st.session_state["just_submitted"]
     if "submission_success" in st.session_state:
         del st.session_state["submission_success"]
+
 
 
 
