@@ -252,7 +252,7 @@ st.sidebar.selectbox("Διεύθυνση", divisions, key="division", index=None
 st.sidebar.selectbox("Επίπεδο", levels, key="level", index=None, placeholder="Επιλέξτε Επίπεδο...")
 st.sidebar.selectbox("Φύλο", genders, key="gender", index=None, placeholder="Επιλέξτε Φύλο...")
 st.sidebar.selectbox("Έτη Εργασίας στην Alumil", tenures, key="tenure", index=None, placeholder="Επιλέξτε Προυπηρεσία...")
-st.sidebar.selectbox("Έτος Γεννήσεως", generations, key="generation", index=None, placeholder="Επιλέξτε Γενιά...",
+st.sidebar.selectbox("Έτος Γεννήσεως", generations, key="generation", index=None, placeholder="Επιλέξτε το έτος...",
     help="Gen Z: 1997–2012 | Millennials: 1981–1996 | Gen X: 1965–1980 | Baby Boomers: 1946–1964")
 
 st.sidebar.markdown("---")
@@ -349,5 +349,6 @@ if st.session_state.get("just_submitted"):
         """, height=0)
     del st.session_state["just_submitted"]
     st.session_state.pop("submission_success", None)
+
 
 
