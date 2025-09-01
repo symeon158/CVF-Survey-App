@@ -44,7 +44,7 @@ def connect_gsheets():
 # Sections with proposals (no Clan/Adhocracy/Market/Hierarchy shown)
 # ——————————————————
 elements = {
-    "Δομικά Χαρακτηριστικά": {
+    "Κύρια Χαρακτηριστικά": {
         "opt1": "Στην ΑΛΟΥΜΥΛ  νιώθω οικεία. Είμαστε σαν μια μεγάλη οικογένεια. Οι άνθρωποι μοιράζονται πολλά μεταξύ τους.",
         "opt2": "Η ΑΛΟΥΜΥΛ είναι δυναμική και πρωτοπόρα εταιρία. Οι άνθρωποι παίρνουν ρίσκα και δοκιμάζουν νέα πράγματα.",
         "opt3": "Η ΑΛΟΥΜΥΛ νοιάζεται πολύ για τα αποτελέσματα. Σημασία έχει να γίνει η δουλειά σωστά και γρήγορα. Οι άνθρωποι είναι ανταγωνιστικοί και θέλουν να πετυχαίνουν.",
@@ -86,7 +86,7 @@ elements = {
 # Narrative texts shown inside each example expander
 # ——————————————————
 example_texts = {
-    "Δομικά Χαρακτηριστικά": """
+    "Κύρια Χαρακτηριστικά": """
 **Κατανόηση Κατανομής:**  
 
 Δείτε ένα παράδειγμα για το πως να μοιράσετε τους 100 πόντους που έχετε στη διάθεσή σας.
@@ -173,7 +173,7 @@ example_texts = {
 # Example allocations (order: opt1,opt2,opt3,opt4)
 # ——————————————————
 example_allocations = {
-    "Δομικά Χαρακτηριστικά": [10, 10, 45, 35],
+    "Κύρια Χαρακτηριστικά": [10, 10, 45, 35],
     "Ηγεσία Οργανισμού": [40, 25, 0, 35],
     "Διαχείριση Προσωπικού": [50, 20, 0, 30],
     "Συνοχή Οργανισμού": [15, 5, 20, 60],
@@ -256,7 +256,7 @@ st.sidebar.selectbox("Γενιά", generations, key="generation", index=None, pl
     help="Gen Z: 1997–2012 | Millennials: 1981–1996 | Gen X: 1965–1980 | Baby Boomers: 1946–1964")
 
 st.sidebar.markdown("---")
-st.sidebar.subheader("ℹ️ Σχετικά με το Project")
+st.sidebar.subheader("ℹ️ Σχετικά με την Συμπλήρωση Ερωτηματολογίου!")
 st.sidebar.markdown("""
 <div class="project-info" style="text-align: justify;">
 <strong>Οδηγίες Συμμετοχής στην Έρευνα Κουλτούρας</strong><br><br>
@@ -349,3 +349,4 @@ if st.session_state.get("just_submitted"):
         """, height=0)
     del st.session_state["just_submitted"]
     st.session_state.pop("submission_success", None)
+
