@@ -31,6 +31,7 @@ This app can be deployed to:
 ### Render Build Command
 ```bash
 mkdir .streamlit; cp /etc/secrets/secrets.toml ./.streamlit/; pip install --upgrade pip && pip install -r requirements.txt
+```
 
 🔒 Security
 
