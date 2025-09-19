@@ -51,6 +51,12 @@ Visualize organizational culture using radar (spider) charts
 
 Benchmark against reference profiles from Cameron & Quinn
 
+<img width="1116" height="1095" alt="output (3)" src="https://github.com/user-attachments/assets/a328dd4b-3867-4d27-a0c2-6c6ed2b81615" />
+
+
+<img width="2379" height="1186" alt="output (2)" src="https://github.com/user-attachments/assets/0690c109-8093-4bf9-a557-0944e9a1b9a9" />
+
+
 🚀 Future Enhancements
 
 Admin dashboard for live monitoring of submissions.
