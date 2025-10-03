@@ -11,7 +11,7 @@ from zoneinfo import ZoneInfo
 st.set_page_config(page_title="CVF Survey", layout="wide")
 st.markdown("""
 <style>
-.header{display:flex;align-items:center;background:#f8f9fa;padding:10px 20px;border-radius:8px;margin-bottom:25px}
+.header{display:flex;align-items:center;background:#0E2841;padding:10px 20px;border-radius:8px;margin-bottom:25px}
 .header img{height:60px;margin-right:15px}
 .header h1{color:#fff;font-size:28px;margin:0}
 .css-1d391kg{width:320px}
@@ -349,6 +349,7 @@ if st.session_state.get("just_submitted"):
         """, height=0)
     del st.session_state["just_submitted"]
     st.session_state.pop("submission_success", None)
+
 
 
 
