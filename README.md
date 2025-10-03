@@ -1,7 +1,7 @@
 # 📝 CVF Organizational Culture Survey App
 
 A custom web application built with **Python** and **Streamlit** to evaluate organizational culture based on the **Competing Values Framework (Cameron & Quinn)**.  
-- 👉 Use the App [CVF Surcey App](https://cvf-survey-app-2k2fihtuimbkqcs7vdzfjv.streamlit.app/)
+- 👉 Use the App [CVF Survey App](https://cvf-survey-app-2k2fihtuimbkqcs7vdzfjv.streamlit.app/)
 
 ## 🔑 Key Features
 - **Interactive Survey UI** using Streamlit with tailored demographics (Division, Level, Gender, Generation, Tenure).  
