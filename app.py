@@ -15,7 +15,7 @@ st.markdown("""
 .header img{height:60px;margin-right:15px}
 .header h1{color:#fff;font-size:28px;margin:0}
 .css-1d391kg{width:320px}
-.project-info{background:#f0f2f6;padding:15px;border-radius:8px;margin-bottom:20px;font-size:14px;line-height:1.6;color:#333}
+.project-info{background:#0E2841;padding:15px;border-radius:8px;margin-bottom:20px;font-size:14px;line-height:1.6;color:#333}
 .stButton>button{width:100%;background:#004d99;color:#fff;font-size:16px}
 .small{font-size:.92rem;line-height:1.35rem}
 .cvf-label{display:block;min-height:150px;max-height:150px;overflow:auto;padding-right:4px}      /* ίσο ύψος card text */
@@ -225,7 +225,7 @@ def submit_callback():
 # ——————————————————
 # Header
 # ——————————————————
-LOGO_URL = "https://raw.githubusercontent.com/symeon158/CVF-Survey-App/main/Alumil_Culture_Insight_Bright.png"
+LOGO_URL = "https://www.accentfuture.com/wp-content/uploads/2024/08/streamlit-training.png"
 
 st.markdown(f"""
 <div class="header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
@@ -349,6 +349,7 @@ if st.session_state.get("just_submitted"):
         """, height=0)
     del st.session_state["just_submitted"]
     st.session_state.pop("submission_success", None)
+
 
 
 
