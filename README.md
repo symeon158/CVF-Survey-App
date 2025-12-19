@@ -52,6 +52,9 @@ Visualize organizational culture using radar (spider) charts
 
 Benchmark against reference profiles from Cameron & Quinn
 
+
+<img width="2429" height="1430" alt="radar_subplots_by_dimension" src="https://github.com/user-attachments/assets/b2863ddc-247c-4463-b927-5313109a3d9f" />
+
 <img width="1148" height="849" alt="boxplot_overall" src="https://github.com/user-attachments/assets/c3c991ad-047c-4cb3-9fb7-bec6dce033fe" />
 <img width="1148" height="849" alt="violin_overall" src="https://github.com/user-attachments/assets/56bf69f0-52fb-4571-a83b-f44f808602a6" />
 
